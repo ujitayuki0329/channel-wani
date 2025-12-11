@@ -239,22 +239,52 @@
         </div>
         <form class="contact-form" @submit.prevent="handleSubmit">
           <div class="form-group">
-            <label for="name">お名前</label>
-            <input type="text" id="name" v-model="form.name" required>
+            <label for="name">お名前 <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="name" 
+              v-model="form.name" 
+              :class="{ 'error': errors.name }"
+              @blur="validateName"
+            >
+            <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
           </div>
           <div class="form-group">
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" v-model="form.email" required>
+            <label for="email">メールアドレス <span class="required">*</span></label>
+            <input 
+              type="email" 
+              id="email" 
+              v-model="form.email" 
+              :class="{ 'error': errors.email }"
+              @blur="validateEmail"
+            >
+            <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
           </div>
           <div class="form-group">
             <label for="subject">件名</label>
-            <input type="text" id="subject" v-model="form.subject" required>
+            <input 
+              type="text" 
+              id="subject" 
+              v-model="form.subject"
+            >
           </div>
           <div class="form-group">
-            <label for="message">お問い合わせ内容</label>
-            <textarea id="message" v-model="form.message" rows="5" required></textarea>
+            <label for="message">お問い合わせ内容 <span class="required">*</span></label>
+            <textarea 
+              id="message" 
+              v-model="form.message" 
+              rows="5" 
+              :class="{ 'error': errors.message }"
+              @blur="validateMessage"
+            ></textarea>
+            <span v-if="errors.message" class="error-message">{{ errors.message }}</span>
           </div>
-          <button type="submit" class="btn btn-primary">送信</button>
+          <div v-if="submitMessage" class="submit-message" :class="{ 'success': submitSuccess, 'error': !submitSuccess }">
+            {{ submitMessage }}
+          </div>
+          <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+            {{ isSubmitting ? '送信中...' : '送信' }}
+          </button>
         </form>
       </div>
     </section>
@@ -275,6 +305,64 @@ const form = ref({
   subject: '',
   message: ''
 })
+
+const errors = ref({
+  name: '',
+  email: '',
+  message: ''
+})
+
+const isSubmitting = ref(false)
+const submitMessage = ref('')
+const submitSuccess = ref(false)
+
+// バリデーション関数
+const validateName = () => {
+  if (!form.value.name.trim()) {
+    errors.value.name = 'お名前を入力してください'
+    return false
+  }
+  if (form.value.name.trim().length < 2) {
+    errors.value.name = 'お名前は2文字以上で入力してください'
+    return false
+  }
+  errors.value.name = ''
+  return true
+}
+
+const validateEmail = () => {
+  if (!form.value.email.trim()) {
+    errors.value.email = 'メールアドレスを入力してください'
+    return false
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(form.value.email)) {
+    errors.value.email = '正しいメールアドレスを入力してください'
+    return false
+  }
+  errors.value.email = ''
+  return true
+}
+
+const validateMessage = () => {
+  if (!form.value.message.trim()) {
+    errors.value.message = 'お問い合わせ内容を入力してください'
+    return false
+  }
+  if (form.value.message.trim().length < 10) {
+    errors.value.message = 'お問い合わせ内容は10文字以上で入力してください'
+    return false
+  }
+  errors.value.message = ''
+  return true
+}
+
+const validateForm = () => {
+  const nameValid = validateName()
+  const emailValid = validateEmail()
+  const messageValid = validateMessage()
+  return nameValid && emailValid && messageValid
+}
 
 // 展示生体のプレビュー（3種類）
 const featuredAnimals: FeaturedAnimal[] = [
@@ -358,14 +446,58 @@ const handleThumbnailError = (event: Event) => {
 //   fetchLatestVideo()
 // })
 
-const handleSubmit = () => {
-  // フォーム送信処理（実際の実装ではバックエンドAPIに送信）
-  alert('お問い合わせありがとうございます！\n後日、担当者よりご連絡いたします。')
-  form.value = {
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+const handleSubmit = async () => {
+  // バリデーション
+  if (!validateForm()) {
+    submitMessage.value = '入力内容に誤りがあります。確認してください。'
+    submitSuccess.value = false
+    return
+  }
+
+  isSubmitting.value = true
+  submitMessage.value = ''
+
+  try {
+    const { data, error } = await useFetch('/api/contact', {
+      method: 'POST',
+      body: {
+        name: form.value.name.trim(),
+        email: form.value.email.trim(),
+        subject: form.value.subject.trim() || '（件名なし）',
+        message: form.value.message.trim()
+      }
+    })
+
+    if (error.value) {
+      throw error.value
+    }
+
+    submitMessage.value = 'お問い合わせありがとうございます！\n後日、担当者よりご連絡いたします。'
+    submitSuccess.value = true
+
+    // フォームをリセット
+    form.value = {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    }
+    errors.value = {
+      name: '',
+      email: '',
+      message: ''
+    }
+
+    // 3秒後にメッセージを非表示
+    setTimeout(() => {
+      submitMessage.value = ''
+    }, 5000)
+  } catch (err) {
+    console.error('送信エラー:', err)
+    submitMessage.value = '送信に失敗しました。しばらく時間をおいて再度お試しください。'
+    submitSuccess.value = false
+  } finally {
+    isSubmitting.value = false
   }
 }
 
@@ -892,6 +1024,51 @@ useHead({
 .form-group textarea {
   resize: vertical;
   min-height: 150px;
+}
+
+.form-group .required {
+  color: #e74c3c;
+  margin-left: 0.25rem;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.error-message {
+  display: block;
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.submit-message {
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  white-space: pre-line;
+}
+
+.submit-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.submit-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 .btn-youtube {

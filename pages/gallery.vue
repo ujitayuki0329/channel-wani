@@ -39,7 +39,7 @@
             <div class="gallery-image">
               <NuxtImg 
                 :src="item.image || getDefaultImage(category.id)" 
-                :alt="item.name"
+                :alt="`${item.name || category.label} - 深谷爬虫類館（チャンネル鰐）の展示生体`"
                 placeholder
                 class="gallery-img"
               />
@@ -135,9 +135,49 @@ const scrollToCategory = (categoryId: string) => {
 }
 
 useHead({
-  title: '展示生体 - 深谷爬虫類館',
+  title: '展示生体 | 深谷爬虫類館 | チャンネル鰐',
   meta: [
-    { name: 'description', content: '深谷爬虫類館で飼育している100種類以上の爬虫類たちをご紹介します。' }
+    { name: 'description', content: '深谷爬虫類館（チャンネル鰐）で飼育している100種類以上の爬虫類たちをご紹介します。ヘビ、トカゲ、カメなど様々な種類の爬虫類を展示しています。' },
+    { name: 'keywords', content: '深谷爬虫類館,チャンネル鰐,展示生体,爬虫類,ヘビ,トカゲ,カメ,爬虫類展示,深谷市爬虫類館' },
+    { property: 'og:title', content: '展示生体 | 深谷爬虫類館 | チャンネル鰐' },
+    { property: 'og:description', content: '深谷爬虫類館で飼育している100種類以上の爬虫類たちをご紹介します。' },
+    { property: 'og:url', content: 'https://fukayahachu.com/gallery' },
+    { property: 'og:image', content: 'https://fukayahachu.com/images/sample-hebi.jpg' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: '展示生体 - 深谷爬虫類館',
+        description: '深谷爬虫類館で飼育している100種類以上の爬虫類たちをご紹介します。',
+        url: 'https://fukayahachu.com/gallery',
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'ヘビの種類',
+              description: '様々な種類のヘビを展示しています。'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'トカゲの種類',
+              description: 'カラフルで魅力的なトカゲたちを展示しています。'
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: 'カメの種類',
+              description: 'リクガメなど、様々なカメを展示しています。'
+            }
+          ]
+        }
+      })
+    }
   ]
 })
 </script>

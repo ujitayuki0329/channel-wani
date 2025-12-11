@@ -49,7 +49,7 @@
           <div class="about-image">
             <NuxtImg 
               src="/images/building-exterior.jpg" 
-              alt="深谷爬虫類館"
+              alt="深谷爬虫類館（チャンネル鰐）外観 - 埼玉県深谷市の爬虫類専門施設"
               class="about-image-img"
               placeholder
             />
@@ -143,7 +143,7 @@
               <NuxtImg 
                 v-if="item.image" 
                 :src="item.image" 
-                :alt="item.name"
+                :alt="`${item.name} - 深谷爬虫類館（チャンネル鰐）の展示生体`"
                 placeholder
                 class="gallery-preview-img"
               />
@@ -370,9 +370,64 @@ const handleSubmit = () => {
 }
 
 useHead({
-  title: '深谷爬虫類館 - 100種類以上の爬虫類を展示する専門施設',
+  title: '深谷爬虫類館 | チャンネル鰐 | 100種類以上の爬虫類を展示する専門施設',
   meta: [
-    { name: 'description', content: '深谷爬虫類館は、トカゲやヘビ、カメやワニまで様々な爬虫類や両生類などの生き物達を間近で見て、触れて、餌やりなどの体験が出来る展示施設です。' }
+    { name: 'description', content: '深谷爬虫類館（チャンネル鰐）は、埼玉県深谷市にある100種類以上の爬虫類を展示する専門施設です。トカゲ、ヘビ、カメ、ワニなど様々な爬虫類を間近で観察でき、触れ合い体験や餌やり体験も可能です。YouTubeチャンネル登録者100万人を誇る爬虫類専門施設です。' },
+    { name: 'keywords', content: '深谷爬虫類館,チャンネル鰐,爬虫類館,爬虫類,ヘビ,トカゲ,カメ,ワニ,埼玉県,深谷市,爬虫類展示,触れ合い体験,餌やり体験,YouTube,チャンネル鰐YouTube,深谷市爬虫類館' },
+    { property: 'og:title', content: '深谷爬虫類館 | チャンネル鰐 | 100種類以上の爬虫類を展示する専門施設' },
+    { property: 'og:description', content: '深谷爬虫類館（チャンネル鰐）は、埼玉県深谷市にある100種類以上の爬虫類を展示する専門施設です。トカゲ、ヘビ、カメ、ワニなど様々な爬虫類を間近で観察でき、触れ合い体験や餌やり体験も可能です。' },
+    { property: 'og:url', content: 'https://fukayahachu.com' },
+    { property: 'og:image', content: 'https://fukayahachu.com/images/building-exterior.jpg' },
+    { name: 'twitter:title', content: '深谷爬虫類館 | チャンネル鰐' },
+    { name: 'twitter:description', content: '100種類以上の爬虫類を展示する専門施設。触れ合い体験や餌やり体験も可能です。' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Zoo',
+        name: '深谷爬虫類館',
+        alternateName: 'チャンネル鰐',
+        description: '深谷爬虫類館は、埼玉県深谷市にある100種類以上の爬虫類を展示する専門施設です。',
+        url: 'https://fukayahachu.com',
+        logo: 'https://fukayahachu.com/images/logo.png',
+        image: 'https://fukayahachu.com/images/building-exterior.jpg',
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'JP',
+          addressRegion: '埼玉県',
+          addressLocality: '深谷市',
+          streetAddress: '荒川１３－１',
+          postalCode: '369-1245'
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: '36.11942027244902',
+          longitude: '139.24044987600905'
+        },
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday'
+          ],
+          opens: '10:00',
+          closes: '17:00'
+        },
+        priceRange: '¥1,000-¥2,000',
+        sameAs: [
+          'https://www.youtube.com/@WANIVSPBAO',
+          'https://twitter.com/wanivspbao',
+          'https://channelwani.base.shop/'
+        ]
+      })
+    }
   ]
 })
 </script>

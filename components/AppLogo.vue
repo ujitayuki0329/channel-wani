@@ -3,7 +3,7 @@
     <NuxtLink to="/" class="logo-link">
       <img 
         src="/images/logo.png" 
-        alt="深谷爬虫類館ロゴ" 
+        alt="深谷爬虫類館（チャンネル鰐）ロゴ" 
         class="logo-image"
       />
       <span class="logo-title">深谷爬虫類館</span>

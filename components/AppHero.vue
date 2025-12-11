@@ -3,7 +3,7 @@
     <div class="hero-background">
       <NuxtImg 
         src="/images/building-exterior.jpg" 
-        alt="深谷爬虫類館外観"
+        alt="深谷爬虫類館（チャンネル鰐）外観 - 埼玉県深谷市の爬虫類専門施設"
         class="hero-bg-image"
         placeholder
       />

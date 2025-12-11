@@ -49,7 +49,7 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/images/logo.png' },
         { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/images/logo.png' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/images/logo.png' },
-        { rel: 'shortcut icon', href: '/images/logo.png' }
+        { rel: 'shortcut icon', type: 'image/png', href: '/images/logo.png' }
       ]
     }
   }

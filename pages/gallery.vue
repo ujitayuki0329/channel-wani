@@ -38,13 +38,11 @@
           >
             <div class="gallery-image">
               <NuxtImg 
-                v-if="item.image" 
-                :src="item.image" 
+                :src="item.image || getDefaultImage(category.id)" 
                 :alt="item.name"
                 placeholder
                 class="gallery-img"
               />
-              <div v-else class="image-placeholder">{{ category.label }}{{ index + 1 }}</div>
             </div>
             <div class="gallery-info">
               <h4>{{ item.name || `${category.label}の種類名` }}</h4>
@@ -88,29 +86,40 @@ const activeCategory = ref('snakes')
 // 既存サイトの画像を使用（実際の画像パスに置き換えてください）
 const galleryItems: Record<string, GalleryItem[]> = {
   snakes: [
-    { name: 'ヘビの種類1', description: '説明文', image: '/images/IMG_6881.JPG' },
-    { name: 'ヘビの種類2', description: '説明文', image: '/images/IMG_6619.JPG' },
-    { name: 'ヘビの種類3', description: '説明文', image: '/images/2L3A6606.JPG' },
-    { name: 'ヘビの種類4', description: '説明文', image: '/images/2L3A6532.JPG' },
+    { name: 'ヘビの種類1', description: '説明文', image: '/images/sample-hebi.jpg' },
+    { name: 'ヘビの種類2', description: '説明文', image: '/images/sample-hebi.jpg' },
+    { name: 'ヘビの種類3', description: '説明文', image: '/images/sample-hebi.jpg' },
+    { name: 'ヘビの種類4', description: '説明文', image: '/images/sample-hebi.jpg' },
   ],
   lizards: [
-    { name: 'トカゲの種類1', description: '説明文', image: '/images/Fs8kkA3akAEXGp5.jpg' },
-    { name: 'トカゲの種類2', description: '説明文' },
-    { name: 'トカゲの種類3', description: '説明文' },
+    { name: 'トカゲの種類1', description: '説明文', image: '/images/sample-tokage.jpg' },
+    { name: 'トカゲの種類2', description: '説明文', image: '/images/sample-tokage.jpg' },
+    { name: 'トカゲの種類3', description: '説明文', image: '/images/sample-tokage.jpg' },
   ],
   turtles: [
-    { name: 'カメの種類1', description: '説明文' },
-    { name: 'カメの種類2', description: '説明文' },
-    { name: 'カメの種類3', description: '説明文' },
+    { name: 'カメの種類1', description: '説明文', image: '/images/sample-kame.jpg' },
+    { name: 'カメの種類2', description: '説明文', image: '/images/sample-kame.jpg' },
+    { name: 'カメの種類3', description: '説明文', image: '/images/sample-kame.jpg' },
   ],
   others: [
-    { name: 'その他の爬虫類1', description: '説明文' },
-    { name: 'その他の爬虫類2', description: '説明文' },
+    { name: 'その他の爬虫類1', description: '説明文', image: '/images/sample-hebi.jpg' },
+    { name: 'その他の爬虫類2', description: '説明文', image: '/images/sample-hebi.jpg' },
   ],
 }
 
 const getCategoryItems = (categoryId: string): GalleryItem[] => {
   return galleryItems[categoryId] || []
+}
+
+// カテゴリごとのデフォルト画像を取得
+const getDefaultImage = (categoryId: string): string => {
+  const defaultImages: Record<string, string> = {
+    snakes: '/images/sample-hebi.jpg',
+    lizards: '/images/sample-tokage.jpg',
+    turtles: '/images/sample-kame.jpg',
+    others: '/images/sample-hebi.jpg'
+  }
+  return defaultImages[categoryId] || '/images/sample-hebi.jpg'
 }
 
 const scrollToCategory = (categoryId: string) => {

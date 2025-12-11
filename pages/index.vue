@@ -2,6 +2,15 @@
   <div class="page-index">
     <AppHero />
     
+    <!-- Modal Components -->
+    <AppModal :is-open="isCalendarModalOpen" @close="closeCalendarModal">
+      <NuxtImg src="/images/calender.jpg" alt="カレンダー" class="modal-image" />
+    </AppModal>
+    
+    <AppModal :is-open="isFloorMapModalOpen" @close="closeFloorMapModal">
+      <NuxtImg src="/images/floar-map.jpg" alt="フロアマップ" class="modal-image" />
+    </AppModal>
+    
     <!-- About Section -->
     <section id="about" class="section about">
       <div class="container">
@@ -59,15 +68,15 @@
         <div class="youtube-content">
           <div class="youtube-stats">
             <div class="stat-card">
-              <div class="stat-number">1,000,000+</div>
+              <div class="stat-number">1,010,000+</div>
               <div class="stat-label">登録者数</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number">500+</div>
+              <div class="stat-number">3820+</div>
               <div class="stat-label">動画数</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number">50M+</div>
+              <div class="stat-number">963M+</div>
               <div class="stat-label">総再生回数</div>
             </div>
           </div>
@@ -176,6 +185,10 @@
             <div class="info-item">
               <h4>営業時間</h4>
               <p>10:00 - 17:00</p>
+              <div class="info-links">
+                <a href="#" @click.prevent="openCalendarModal" class="info-link">カレンダーはこちら</a>
+                <a href="#" @click.prevent="openFloorMapModal" class="info-link">フロアマップはこちら</a>
+              </div>
             </div>
             <div class="info-item">
               <h4>料金</h4>
@@ -284,6 +297,26 @@ const featuredAnimals: FeaturedAnimal[] = [
     category: 'カメ'
   }
 ]
+
+// モーダルの状態管理
+const isCalendarModalOpen = ref(false)
+const isFloorMapModalOpen = ref(false)
+
+const openCalendarModal = () => {
+  isCalendarModalOpen.value = true
+}
+
+const closeCalendarModal = () => {
+  isCalendarModalOpen.value = false
+}
+
+const openFloorMapModal = () => {
+  isFloorMapModalOpen.value = true
+}
+
+const closeFloorMapModal = () => {
+  isFloorMapModalOpen.value = false
+}
 
 // 最新動画IDを直接指定（APIキー取得後は、fetchLatestVideo()を使用）
 const latestVideoId = ref<string | null>('qeTuT0blMjQ')
@@ -707,6 +740,36 @@ useHead({
 .info-item p {
   color: var(--text-secondary);
   line-height: 1.8;
+}
+
+.info-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.info-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.info-link:hover {
+  color: var(--secondary-color);
+  border-bottom-color: var(--secondary-color);
+  transform: translateX(5px);
+}
+
+.modal-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
 }
 
 .access-map {

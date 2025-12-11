@@ -25,6 +25,12 @@
             </svg>
             <span>YouTube</span>
           </a>
+          <a href="https://channelwani.base.shop/" target="_blank" rel="noopener noreferrer" class="btn btn-shop">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
+            </svg>
+            <span>公式グッズサイト</span>
+          </a>
         </div>
       </div>
     </div>
@@ -187,6 +193,46 @@
 }
 
 .btn-youtube:hover span {
+  color: #FFFFFF !important;
+}
+
+.btn-shop {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%) !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FF6B35 !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+.btn-shop svg {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0 !important;
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.btn-shop span {
+  color: #FFFFFF !important;
+}
+
+.btn-shop:hover {
+  background: linear-gradient(135deg, #FF5722 0%, #E68900 100%) !important;
+  border-color: #FF5722 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4) !important;
+}
+
+.btn-shop:hover svg {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.btn-shop:hover span {
   color: #FFFFFF !important;
 }
 

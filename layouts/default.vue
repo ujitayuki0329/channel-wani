@@ -5,6 +5,7 @@
       <slot />
     </main>
     <AppFooter />
+    <ScrollToTop />
   </div>
 </template>
 
@@ -23,3 +24,4 @@
   flex: 1;
 }
 </style>
+

@@ -28,8 +28,18 @@ export default defineNuxtConfig({
   // ランタイム設定
   runtimeConfig: {
     youtubeApiKey: process.env.YOUTUBE_API_KEY,
+    resendApiKey: process.env.RESEND_API_KEY,
+    resendFrom: process.env.RESEND_FROM,
     public: {
       youtubeChannelHandle: 'WANIVSPBAO'
+    }
+  },
+
+  // Nitro設定（Cloudflare Pages用）
+  nitro: {
+    preset: 'cloudflare-pages',
+    experimental: {
+      wasm: true
     }
   },
 

@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: `"深谷爬虫類館" <${resendFrom}>`,
+        from: '深谷爬虫類館 <onboarding@resend.dev>',
         to: ['myuhomo769@fuwamofu.com'],
         reply_to: [email],
         subject: `【お問い合わせ】${subject || "無題"}`,

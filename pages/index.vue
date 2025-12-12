@@ -369,7 +369,7 @@ const featuredAnimals: FeaturedAnimal[] = [
   {
     name: 'ヘビの種類',
     description: '様々な種類のヘビを展示しています。実際に触れ合うこともできます。',
-    image: '/images/sample-hebi.JPG',
+    image: '/images/sample-hebi.jpg',
     category: 'ヘビ'
   },
   {

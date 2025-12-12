@@ -466,19 +466,33 @@ const handleSubmit = async () => {
   submitMessage.value = ''
 
   try {
-    const { data, error } = await useFetch('/api/contact', {
-      method: 'POST',
-      body: {
-        name: form.value.name.trim(),
-        email: form.value.email.trim(),
-        subject: form.value.subject.trim() || '（件名なし）',
-        message: form.value.message.trim()
-      }
-    })
+    // EmailJSを動的インポート
+    const emailjs = await import('@emailjs/browser')
+    const config = useRuntimeConfig()
+    
+    const publicKey = config.public.emailjsPublicKey as string
+    const serviceId = config.public.emailjsServiceId as string
+    const templateId = config.public.emailjsTemplateId as string
 
-    if (error.value) {
-      throw error.value
+    if (!publicKey || !serviceId || !templateId) {
+      throw new Error('EmailJSの設定が正しくありません')
     }
+
+    // EmailJSを初期化
+    emailjs.init(publicKey)
+
+    // メール送信
+    await emailjs.send(
+      serviceId,
+      templateId,
+      {
+        from_name: form.value.name.trim(),
+        from_email: form.value.email.trim(),
+        subject: form.value.subject.trim() || '（件名なし）',
+        message: form.value.message.trim(),
+        to_email: 'myuhomo769@fuwamofu.com'
+      }
+    )
 
     submitMessage.value = 'お問い合わせありがとうございます！\n後日、担当者よりご連絡いたします。'
     submitSuccess.value = true

@@ -434,25 +434,6 @@ const handleThumbnailError = (event: Event) => {
   }
 }
 
-// 最新動画を取得（APIキー取得後に有効化）
-// const fetchLatestVideo = async () => {
-//   try {
-//     loadingVideo.value = true
-//     const { data } = await useFetch<{ videoId: string | null; title?: string; thumbnail?: string; error?: string }>('/api/youtube-latest')
-//     if (data.value && 'videoId' in data.value && data.value.videoId) {
-//       latestVideoId.value = data.value.videoId
-//       videoTitle.value = data.value.title || null
-//     }
-//   } catch (error) {
-//     console.error('Failed to fetch latest video:', error)
-//   } finally {
-//     loadingVideo.value = false
-//   }
-// }
-
-// onMounted(() => {
-//   fetchLatestVideo()
-// })
 
 const handleSubmit = async () => {
   // バリデーション
@@ -481,7 +462,10 @@ const handleSubmit = async () => {
     // EmailJSを初期化
     emailjs.init(publicKey)
 
+    const autoReplyTemplateId = config.public.emailjsAutoReplyTemplateId as string
+
     // メール送信
+    // 管理者へ通知
     await emailjs.send(
       serviceId,
       templateId,
@@ -493,6 +477,25 @@ const handleSubmit = async () => {
         to_email: 'myuhomo769@fuwamofu.com'
       }
     )
+
+    // ユーザーへ自動返信（テンプレートIDが設定されている場合のみ）
+    if (autoReplyTemplateId) {
+      try {
+        await emailjs.send(
+          serviceId,
+          autoReplyTemplateId,
+          {
+            to_name: form.value.name.trim(),
+            to_email: form.value.email.trim(),
+            subject: form.value.subject.trim() || '（件名なし）',
+            message: form.value.message.trim()
+          }
+        )
+      } catch (autoReplyError) {
+        // 自動返信のエラーはログに記録するが、全体の送信は成功とする
+        console.error('自動返信メールの送信に失敗しました:', autoReplyError)
+      }
+    }
 
     submitMessage.value = 'お問い合わせありがとうございます！\n後日、担当者よりご連絡いたします。'
     submitSuccess.value = true

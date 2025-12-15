@@ -305,15 +305,18 @@ const closeMobileMenu = () => {
     -webkit-backdrop-filter: blur(20px);
     width: 320px;
     max-width: 85vw;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    min-height: 100vh;
     padding: 0;
     box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     gap: 0;
     border-left: 1px solid rgba(45, 134, 89, 0.1);
+    -webkit-overflow-scrolling: touch;
   }
   
   .nav-list.active {
@@ -342,8 +345,7 @@ const closeMobileMenu = () => {
     flex-direction: column;
     padding: clamp(0.25rem, 1vh, 0.5rem) 0;
     min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    margin-bottom: clamp(0.5rem, 1.5vh, 0.75rem);
   }
 
   .nav-list.active .mobile-menu-top {

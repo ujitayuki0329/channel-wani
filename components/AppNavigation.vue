@@ -17,7 +17,7 @@
     </ul>
 
     <!-- モバイル用のメニュー -->
-    <div class="nav-list" :class="{ active: mobileMenuOpen }">
+    <div class="nav-list" :class="{ active: mobileMenuOpen }" :style="{ height: menuHeight, maxHeight: menuHeight }">
       <!-- 上部ボタンエリア -->
       <div class="mobile-menu-top">
         <a 
@@ -129,12 +129,30 @@ const navigationItems: NavigationItem[] = [
 ]
 
 const mobileMenuOpen = ref(false)
+const menuHeight = ref<string>('100vh')
+
+// 実際の利用可能な高さを取得して設定
+const updateMenuHeight = () => {
+  if (typeof window !== 'undefined') {
+    // 実際のビューポート高さを取得
+    const vh = window.innerHeight
+    menuHeight.value = `${vh}px`
+  }
+}
+
+// 画面回転時のハンドラー
+const handleOrientationChange = () => {
+  // 画面回転時は少し遅延させてから更新
+  setTimeout(updateMenuHeight, 100)
+}
 
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
   // メニューが開いている時はbodyのスクロールを無効化
   if (mobileMenuOpen.value) {
     document.body.style.overflow = 'hidden'
+    // メニューを開く時に高さを更新
+    updateMenuHeight()
   } else {
     document.body.style.overflow = ''
   }
@@ -144,6 +162,20 @@ const closeMobileMenu = () => {
   mobileMenuOpen.value = false
   document.body.style.overflow = ''
 }
+
+onMounted(() => {
+  // 初期化時に高さを設定
+  updateMenuHeight()
+  
+  // リサイズ時に高さを更新
+  window.addEventListener('resize', updateMenuHeight)
+  window.addEventListener('orientationchange', handleOrientationChange)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateMenuHeight)
+  window.removeEventListener('orientationchange', handleOrientationChange)
+})
 </script>
 
 <style scoped>
@@ -305,9 +337,8 @@ const closeMobileMenu = () => {
     -webkit-backdrop-filter: blur(20px);
     width: 320px;
     max-width: 85vw;
-    height: 100dvh;
-    max-height: 100dvh;
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     padding: 0;
     box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);

@@ -21,9 +21,11 @@
       <!-- 上部ボタンエリア -->
       <div class="mobile-menu-top">
         <a 
-          href="#" 
+          href="https://channelwani.base.shop/" 
+          target="_blank"
+          rel="noopener noreferrer"
           class="top-button top-button-goods"
-          @click.prevent="closeMobileMenu"
+          @click="closeMobileMenu"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M7 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM1 2v2h2l3.6 7.59-1.35 2.45c-.15.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
@@ -45,18 +47,20 @@
       </div>
 
       <!-- 通常のナビゲーション項目 -->
-      <div v-for="item in navigationItems" :key="item.path" class="nav-item">
-        <NuxtLink 
-          :to="item.path" 
-          class="nav-link" 
-          :class="{ 'youtube-link': item.isYoutube }"
-          @click="closeMobileMenu"
-        >
-          <svg v-if="item.isYoutube" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="nav-icon">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-          </svg>
-          {{ item.label }}
-        </NuxtLink>
+      <div class="mobile-menu-nav-items">
+        <div v-for="item in navigationItems" :key="item.path" class="nav-item">
+          <NuxtLink 
+            :to="item.path" 
+            class="nav-link" 
+            :class="{ 'youtube-link': item.isYoutube }"
+            @click="closeMobileMenu"
+          >
+            <svg v-if="item.isYoutube" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="nav-icon">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            {{ item.label }}
+          </NuxtLink>
+        </div>
       </div>
 
       <!-- 下部SNSリンクエリア -->
@@ -302,12 +306,12 @@ const closeMobileMenu = () => {
     width: 320px;
     max-width: 85vw;
     height: 100vh;
+    max-height: 100vh;
     padding: 0;
     box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     gap: 0;
     border-left: 1px solid rgba(45, 134, 89, 0.1);
   }
@@ -318,16 +322,28 @@ const closeMobileMenu = () => {
 
   /* 上部ボタンエリア */
   .mobile-menu-top {
-    padding: 70px 1.25rem 1.25rem;
+    padding: clamp(50px, 10vh, 70px) clamp(1rem, 3vw, 1.25rem) clamp(1rem, 2vh, 1.25rem);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: clamp(0.5rem, 1.5vh, 0.75rem);
     background: rgba(255, 255, 255, 0.5);
     border-bottom: 1px solid rgba(45, 134, 89, 0.08);
-    margin-bottom: 0.75rem;
+    margin-bottom: clamp(0.5rem, 1.5vh, 0.75rem);
     opacity: 0;
     transform: translateY(-20px);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    flex-shrink: 0;
+  }
+
+  /* ナビゲーション項目エリア */
+  .mobile-menu-nav-items {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(0.25rem, 1vh, 0.5rem) 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .nav-list.active .mobile-menu-top {
@@ -340,11 +356,11 @@ const closeMobileMenu = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    padding: 0.85rem 1.25rem;
-    font-size: 0.95rem;
+    gap: clamp(0.4rem, 1.2vw, 0.6rem);
+    padding: clamp(0.65rem, 2vh, 0.85rem) clamp(1rem, 3vw, 1.25rem);
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: clamp(10px, 2.5vw, 12px);
     text-decoration: none;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -372,8 +388,8 @@ const closeMobileMenu = () => {
   }
 
   .top-button svg {
-    width: 18px;
-    height: 18px;
+    width: clamp(16px, 4vw, 18px);
+    height: clamp(16px, 4vw, 18px);
     flex-shrink: 0;
     transition: transform 0.25s ease;
     position: relative;
@@ -420,58 +436,62 @@ const closeMobileMenu = () => {
     fill: #FFFFFF;
   }
   
-  .nav-item {
+  .mobile-menu-nav-items .nav-item {
     width: 100%;
     opacity: 0;
     transform: translateX(20px);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
-    margin-bottom: 0.375rem;
+    margin-bottom: clamp(0.2rem, 0.8vh, 0.3rem);
   }
   
-  .nav-list.active .nav-item {
-    opacity: 1;
-    transform: translateX(0);
+  .mobile-menu-nav-items {
+    margin-bottom: clamp(0.5rem, 1.5vh, 0.75rem);
   }
   
-  .nav-list.active .nav-item:nth-of-type(1) {
+  .nav-list.active .mobile-menu-nav-items .nav-item:nth-of-type(1) {
     transition-delay: 0.2s;
   }
   
-  .nav-list.active .nav-item:nth-of-type(2) {
+  .nav-list.active .mobile-menu-nav-items .nav-item:nth-of-type(2) {
     transition-delay: 0.25s;
   }
   
-  .nav-list.active .nav-item:nth-of-type(3) {
+  .nav-list.active .mobile-menu-nav-items .nav-item:nth-of-type(3) {
     transition-delay: 0.3s;
   }
   
-  .nav-list.active .nav-item:nth-of-type(4) {
+  .nav-list.active .mobile-menu-nav-items .nav-item:nth-of-type(4) {
     transition-delay: 0.35s;
   }
   
-  .nav-list.active .nav-item:nth-of-type(5) {
+  .nav-list.active .mobile-menu-nav-items .nav-item:nth-of-type(5) {
     transition-delay: 0.4s;
   }
   
-  .nav-list.active .nav-item:nth-of-type(6) {
+  .nav-list.active .mobile-menu-nav-items .nav-item:nth-of-type(6) {
     transition-delay: 0.45s;
+  }
+  
+  .nav-list.active .mobile-menu-nav-items .nav-item {
+    opacity: 1;
+    transform: translateX(0);
   }
   
   .nav-link {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    padding: 1rem 1.25rem;
-    font-size: 1rem;
+    gap: clamp(0.6rem, 2vw, 0.875rem);
+    padding: clamp(0.75rem, 2.5vh, 1rem) clamp(1rem, 3vw, 1.25rem);
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
     color: var(--dark-text);
-    border-radius: 10px;
+    border-radius: clamp(8px, 2vw, 10px);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     background: transparent;
     border: 1px solid transparent;
-    margin: 0 0.75rem;
+    margin: 0 clamp(0.5rem, 2vw, 0.75rem);
   }
   
   .nav-link::before {
@@ -492,8 +512,8 @@ const closeMobileMenu = () => {
   }
   
   .nav-icon {
-    width: 18px;
-    height: 18px;
+    width: clamp(16px, 4vw, 18px);
+    height: clamp(16px, 4vw, 18px);
     flex-shrink: 0;
     transition: transform 0.25s ease;
   }
@@ -543,12 +563,13 @@ const closeMobileMenu = () => {
   /* 下部SNSリンクエリア */
   .mobile-menu-bottom {
     margin-top: auto;
-    padding: 1.5rem 1.25rem 1.75rem;
+    padding: clamp(1rem, 3vh, 1.5rem) clamp(1rem, 3vw, 1.25rem) clamp(1.25rem, 3.5vh, 1.75rem);
     background: rgba(255, 255, 255, 0.5);
     border-top: 1px solid rgba(45, 134, 89, 0.08);
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    flex-shrink: 0;
   }
 
   .nav-list.active .mobile-menu-bottom {
@@ -558,10 +579,10 @@ const closeMobileMenu = () => {
   }
 
   .social-section-title {
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 2.2vw, 0.85rem);
     font-weight: 600;
     color: var(--text-secondary);
-    margin-bottom: 0.875rem;
+    margin-bottom: clamp(0.6rem, 2vh, 0.875rem);
     text-align: center;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -571,19 +592,19 @@ const closeMobileMenu = () => {
   .social-links-mobile {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.625rem;
+    gap: clamp(0.5rem, 1.5vw, 0.625rem);
   }
 
   .social-link-mobile {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
+    gap: clamp(0.4rem, 1.2vw, 0.5rem);
+    padding: clamp(0.6rem, 2vh, 0.75rem) clamp(0.8rem, 2.5vw, 1rem);
+    border-radius: clamp(8px, 2vw, 10px);
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 2.2vw, 0.875rem);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -610,8 +631,8 @@ const closeMobileMenu = () => {
   }
 
   .social-link-mobile svg {
-    width: 18px;
-    height: 18px;
+    width: clamp(16px, 4vw, 18px);
+    height: clamp(16px, 4vw, 18px);
     flex-shrink: 0;
     transition: transform 0.25s ease;
     position: relative;
